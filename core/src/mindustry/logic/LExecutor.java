@@ -504,6 +504,20 @@ public class LExecutor{
                                 unit.addBuild(ai.plan);
                             }
                         }
+                        // When try to build @empty block, create a remove plan
+                        else if((state.rules.logicUnitBuild || exec.privileged) && unit.canBuild() && exec.obj(p3) instanceof Block block && block.name.equals("empty") ){
+                            int x = World.toTile(x1 - block.offset/tilesize), y = World.toTile(y1 - block.offset/tilesize);
+//                            int rot = Mathf.mod(exec.numi(p4), 4);
+                            //reset state of last request when necessary
+                            if(ai.plan.x != x || ai.plan.y != y || ai.plan.block != block || unit.plans.isEmpty()){
+                                ai.plan.progress = 0;
+                                ai.plan.initialized = false;
+                                ai.plan.stuck = false;
+                            }
+                            ai.plan.set(x, y);
+                            unit.clearBuilding();
+                            unit.addBuild(ai.plan);
+                        }
                     }
                     case getBlock -> {
                         float range = Math.max(unit.range(), unit.type.buildRange);
