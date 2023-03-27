@@ -141,6 +141,15 @@ public class BuildPlan implements Position, QuadTreeObject{
         this.breaking = false;
         return this;
     }
+    /** allow AI to create a remove plan **/
+    public BuildPlan set(int x, int y){
+        this.x = x;
+        this.y = y;
+        this.rotation = -1;
+        this.block = world.tile(x, y).block();
+        this.breaking = true;
+        return this;
+    }
 
     public float drawx(){
         return x*tilesize + (block == null ? 0 : block.offset);
